@@ -6,7 +6,6 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -25,7 +24,6 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.ar.core.ArCoreApk;
@@ -43,9 +41,7 @@ import com.google.ar.core.exceptions.CameraNotAvailableException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
 
 public class PocketSolar extends AppCompatActivity {
@@ -79,11 +75,9 @@ public class PocketSolar extends AppCompatActivity {
     float[] mePos = new float[3];
 
     //////////////////////////////////////////////////////////////////////////////////////
-    float[] firstPlanetCenter = new float[4];
-    float[] secondPlanetCenter = new float[4];
     ImageButton pengBtn, andyBtn;
 
-    boolean isModelInit = false, mCatched = false;
+    boolean mCatched = false;
     float mCatchX, mCatchY;
     float borderPointY;
 
@@ -93,6 +87,8 @@ public class PocketSolar extends AppCompatActivity {
     float[] secondFlagMatrix = new float[16];
     float[] lineModelMatrix = new float[16];
 
+    Planet firstPlanet;
+    Planet secondPlanet;
 
     ImageButton flagResetBtn;
 
@@ -104,6 +100,9 @@ public class PocketSolar extends AppCompatActivity {
 
     boolean doubleTap = false;
     boolean longTouch = false;
+
+    Planet infoPlanet;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -266,18 +265,18 @@ public class PocketSolar extends AppCompatActivity {
                                         @Override
                                         public void run() {
 
-                                            txt_korName.setText(name_kor);
-                                            txt_engName.setText(name_eng);
-                                            txt_distance.setText(info_distance);
-                                            txt_surface.setText(info_surface);
-                                            txt_weight.setText(info_weight);
-                                            txt_lean.setText(info_lean);
-                                            txt_revolve.setText(info_revolve);
-                                            txt_rotate.setText(info_rotate);
-                                            txt_maxCel.setText(info_maxCel);
-                                            txt_minCel.setText(info_minCel);
-                                            txt_press.setText(info_press);
-                                            txt_satellite.setText(info_satellite);
+                                            txt_korName.setText(infoPlanet.name_kor);
+                                            txt_engName.setText(infoPlanet.name);
+                                            txt_distance.setText(infoPlanet.info_distance);
+                                            txt_surface.setText(infoPlanet.info_surface);
+                                            txt_weight.setText(infoPlanet.info_weight);
+                                            txt_lean.setText(infoPlanet.info_lean);
+                                            txt_revolve.setText(infoPlanet.info_revolve);
+                                            txt_rotate.setText(infoPlanet.info_rotate);
+                                            txt_maxCel.setText(infoPlanet.info_maxCel);
+                                            txt_minCel.setText(infoPlanet.info_minCel);
+                                            txt_press.setText(infoPlanet.info_press);
+                                            txt_satellite.setText(infoPlanet.info_satellite);
                                             layout_info.setVisibility(View.VISIBLE);
                                             // 정보 설정
                                         }
@@ -319,7 +318,6 @@ public class PocketSolar extends AppCompatActivity {
                                     Matrix.translateM(secondFlagMatrix, 0, 0f, borderPointY, 0f);
                                     mRenderer.mflag2.setModelMatrix(secondFlagMatrix);
 
-                                    lineDraw();
 
                                     state = PLANET_DISTANCE_INFO;
                                     mRenderer.secondFlag =true;
@@ -338,7 +336,13 @@ public class PocketSolar extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
+                        if(state.equals(PLANET_INFO)){
+                            comment.setVisibility(View.INVISIBLE);
+                        }else{
+                            comment.setVisibility(View.VISIBLE);
+                        }
                         comment.setText(getCommentMessage(state));
+
                         if(state.equals(RISING_SUN)){
                             btnLayout.setVisibility(View.VISIBLE);
                         }
@@ -401,15 +405,6 @@ public class PocketSolar extends AppCompatActivity {
         return res;
     }
 
-    void lineDraw(){
-        mRenderer.lineDraw = true;
-
-        mRenderer.addLine(firstPlanetCenter[0],firstPlanetCenter[1],firstPlanetCenter[2]);
-        mRenderer.addPoint(firstPlanetCenter[0],firstPlanetCenter[1],firstPlanetCenter[2]);
-        mRenderer.addPoint(secondPlanetCenter[0],secondPlanetCenter[1],secondPlanetCenter[2]);
-
-    }
-
     @Override
     protected void onResume() {
         super.onResume();
@@ -452,9 +447,9 @@ public class PocketSolar extends AppCompatActivity {
         AugmentedImageDatabase imageDatabase = new AugmentedImageDatabase(mSession);
 
         try {
-            InputStream is = getAssets().open("solarsystem.png");
+            InputStream is = getAssets().open("sunImage.jpg");
             Bitmap bitmap = BitmapFactory.decodeStream(is);
-            imageDatabase.addImage("태양계",bitmap);
+            imageDatabase.addImage("태양",bitmap);
 
             is.close();
         } catch (IOException e) {
@@ -518,6 +513,7 @@ public class PocketSolar extends AppCompatActivity {
                 while (!initStop) {
                     if(currentTime<100) {
                         drawTag = true;
+                        mRenderer.sunDraw = true;
                         Matrix.translateM(sunMatrix, 0, 0f, 0.01f, 0f);
                         mRenderer.sun.setModelMatrix(sunMatrix);
                         SystemClock.sleep(100);
@@ -583,21 +579,7 @@ public class PocketSolar extends AppCompatActivity {
         return true;
     }
 
-    String name_eng; // 영어이름
-    String name_kor; // 한국명
-    String info_distance; // 지름
-    String info_surface; // 표면적
-    String info_weight; // 질량
-    String info_lean; // 자전축 기울기
-    String info_revolve; // 공전 주기
-    String info_rotate; // 자전 주기
-    String info_maxCel; // 최고섭씨온도
-    String info_minCel; // 최저섭씨온도
-    String info_press; // 대기압
-    String info_satellite; // 위성
 
-    Planet firstPlanet;
-    Planet secondPlanet;
 
     boolean catchCheck(float x, float y, float z, String event) {
         for (Planet planet : mRenderer.planetList) {
@@ -605,7 +587,6 @@ public class PocketSolar extends AppCompatActivity {
             float[][] resAll = planet.getMinMaxPoint();
             float[] minPoint = resAll[0];
             float[] maxPoint = resAll[1];
-            float[] centerPoint = resAll[2];
 
             if (x >= minPoint[0] - 0.3f && x <= maxPoint[0] + 0.3f &&
                     y >= minPoint[1] - 0.3f && y <= maxPoint[1] + 0.3f &&
@@ -613,7 +594,6 @@ public class PocketSolar extends AppCompatActivity {
                 if(event.equals("longTouch")){
                     if (state.equals(PLANET_MOVE_OFF) || state.equals(PLANET_MOVE_ON)) {
                         firstPlanet = planet;
-                        firstPlanetCenter = centerPoint;
 
                         System.arraycopy(planet.myMatrix, 0, firstFlagMatrix, 0, 16);
                         Matrix.translateM(firstFlagMatrix, 0, 0f, 0.15f, 0f);
@@ -623,7 +603,6 @@ public class PocketSolar extends AppCompatActivity {
                     } else if (state.equals(PLANET_DISTANCE_ONE)) {
                         if (!planet.name.equals(firstPlanet.name)) {
                             secondPlanet = planet;
-                            secondPlanetCenter = centerPoint;
                             System.arraycopy(planet.myMatrix, 0, secondFlagMatrix, 0, 16);
 
                             Matrix.translateM(secondFlagMatrix, 0, 0f, 0.15f, 0f);
@@ -632,18 +611,7 @@ public class PocketSolar extends AppCompatActivity {
                     }
                 }
                 else if(event.equals("doubleTap")){
-                    name_eng = planet.name;
-                    name_kor = planet.name_kor;
-                    info_distance = planet.info_distance;
-                    info_surface = planet.info_surface;
-                    info_weight = planet.info_weight;
-                    info_lean = planet.info_lean;
-                    info_revolve = planet.info_revolve;
-                    info_rotate = planet.info_rotate;
-                    info_maxCel = planet.info_maxCel;
-                    info_minCel = planet.info_minCel;
-                    info_press = planet.info_press;
-                    info_satellite = planet.info_satellite;
+                    infoPlanet = planet;
 
                     return true;
                 }
@@ -659,7 +627,7 @@ public class PocketSolar extends AppCompatActivity {
     float rotateAngle = 0;
     float[] calculateInitialMePoint(int width, int height,
                                     float[] projMat, float[] viewMat) {
-        return getScreenPoint(width-100f, height-80f, width, height, projMat, viewMat);
+        return getScreenPoint(width-100f, height-130f, width, height, projMat, viewMat);
     }
     //평면화
     public float[] getScreenPoint(float x, float y, float w, float h,
@@ -785,20 +753,11 @@ public class PocketSolar extends AppCompatActivity {
                                 Matrix.translateM(sunMatrix, 0, 0f, -0.01f, 0f);
                                 mRenderer.sun.setModelMatrix(sunMatrix);
                                 SystemClock.sleep(50);
+                                if(currentTime == 3750){
+                                    mRenderer.sunDraw = false;
+                                }
                             } else if (currentTime == 3780) {
-                                state = INIT;
-                                mRenderer.isImgFind = false;
-                                drawTag = false;
-                                mRenderer.blackholeDraw = false;
-                                blackHoleFlag = false;
-                                messageFlag = true;
-                                init = true;
-
-                                finish();//인텐트 종료
-                                overridePendingTransition(0, 0);//인텐트 효과 없애기
-                                Intent intent = getIntent(); //인텐트
-                                startActivity(intent); //액티비티 열기
-                                overridePendingTransition(0, 0);//인텐트 효과 없애기
+                                finish();
                             }
 
                             Matrix.rotateM(blackHoleMatrix,0,4,0,1f,0);
@@ -840,8 +799,6 @@ public class PocketSolar extends AppCompatActivity {
                 secondFlagMatrix = new float[16];
                 lineModelMatrix = new float[16];
                 mRenderer.mPaths = new ArrayList<>();
-                mRenderer.line.mPoint =  new float[mRenderer.line.maxPoints * 3];
-                mRenderer.line.mNumPoints = 0;
                 if(state.equals(PLANET_MOVE_ON)){
                     rotateFlag = true;
                     rotateThreadOn();

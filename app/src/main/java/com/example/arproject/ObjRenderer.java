@@ -309,10 +309,6 @@ public class ObjRenderer {
         Matrix.multiplyMV(maxPoint, 0, mModelMatrix, 0,
                 new float[]{myMaxPoint[0], myMaxPoint[1], myMaxPoint[2],1f},0);
 
-        float[] centerPoint = new float[4];
-        Matrix.multiplyMV(centerPoint, 0, mModelMatrix, 0,
-                new float[]{0f, 0f, 0f,1f},0);
-
         float[] res0 = new float[3];
         res0[0] = Math.min(minPoint[0], maxPoint[0]);
         res0[1] = Math.min(minPoint[1], maxPoint[1]);
@@ -324,7 +320,7 @@ public class ObjRenderer {
         res1[2] = Math.max(minPoint[2], maxPoint[2]);
 
 
-        float[][] resAll = {res0, res1, centerPoint};
+        float[][] resAll = {res0, res1};
 
         return resAll;
     }

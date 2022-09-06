@@ -25,12 +25,14 @@
             android:layout_weight="1"
             android:orientation="vertical"
             android:background="#ffffff"
-            android:visibility="gone">
+            android:visibility="gone"
+            >
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="1.6">
+                android:layout_weight="1.6"
+                android:padding="2px">
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -61,6 +63,9 @@
                     android:layout_height="match_parent"
                     android:gravity="center_horizontal|center_vertical"
                     android:text="지구"
+                    android:background="@drawable/outline_02"
+                    android:textSize="100px"
+                    android:textColor="@color/black"
                     android:layout_weight="1"></TextView>
                 <TextView
                     android:id="@+id/txt_engName"
@@ -68,6 +73,9 @@
                     android:layout_height="match_parent"
                     android:gravity="center_horizontal|center_vertical"
                     android:text="EARTH"
+                    android:background="@drawable/outline_02"
+                    android:textSize="100px"
+                    android:textColor="@color/black"
                     android:layout_weight="1"></TextView>
             </LinearLayout>
 
@@ -81,6 +89,9 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1.2"
                     android:gravity="center_horizontal|center_vertical"
+                    android:background="@drawable/outline_02"
+                    android:textSize="50px"
+                    android:textColor="@color/black"
                     android:text="지름"></TextView>
                 <TextView
                     android:id="@+id/txt_distance"
@@ -88,18 +99,27 @@
                     android:layout_height="match_parent"
                     android:gravity="center_horizontal|center_vertical"
                     android:text="1234"
+                    android:background="@drawable/outline_02"
+                    android:textSize="50px"
+                    android:textColor="@color/black"
                     android:layout_weight="1"></TextView>
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1.2"
                     android:gravity="center_horizontal|center_vertical"
+                    android:background="@drawable/outline_02"
+                    android:textSize="50px"
+                    android:textColor="@color/black"
                     android:text="표면적"></TextView>
                 <TextView
                     android:id="@+id/txt_surface"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="center_horizontal|center_vertical"
+                    android:background="@drawable/outline_02"
+                    android:textSize="50px"
+                    android:textColor="@color/black"
                     android:text="1234"
                     android:layout_weight="1"></TextView>
             </LinearLayout>
@@ -113,6 +133,9 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1.2"
                     android:gravity="center_horizontal|center_vertical"
+                    android:background="@drawable/outline_02"
+                    android:textSize="50px"
+                    android:textColor="@color/black"
                     android:text="질량"></TextView>
                 <TextView
                     android:id="@+id/txt_weight"
@@ -120,12 +143,18 @@
                     android:layout_height="match_parent"
                     android:gravity="center_horizontal|center_vertical"
                     android:text="1234"
+                    android:background="@drawable/outline_02"
+                    android:textSize="50px"
+                    android:textColor="@color/black"
                     android:layout_weight="1"></TextView>
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1.2"
                     android:gravity="center_horizontal|center_vertical"
+                    android:background="@drawable/outline_02"
+                    android:textSize="50px"
+                    android:textColor="@color/black"
                     android:text="자전축\n기울기"></TextView>
                 <TextView
                     android:id="@+id/txt_lean"
@@ -133,6 +162,9 @@
                     android:layout_height="match_parent"
                     android:gravity="center_horizontal|center_vertical"
                     android:text="1234"
+                    android:background="@drawable/outline_02"
+                    android:textSize="50px"
+                    android:textColor="@color/black"
                     android:layout_weight="1"></TextView>
             </LinearLayout>
             <LinearLayout
@@ -145,6 +177,9 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1.2"
                     android:gravity="center_horizontal|center_vertical"
+                    android:background="@drawable/outline_02"
+                    android:textSize="50px"
+                    android:textColor="@color/black"
                     android:text="공전주기"></TextView>
                 <TextView
                     android:id="@+id/txt_revolve"
@@ -152,12 +187,18 @@
                     android:layout_height="match_parent"
                     android:gravity="center_horizontal|center_vertical"
                     android:text="1234"
+                    android:background="@drawable/outline_02"
+                    android:textSize="50px"
+                    android:textColor="@color/black"
                     android:layout_weight="1"></TextView>
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1.2"
                     android:gravity="center_horizontal|center_vertical"
+                    android:background="@drawable/outline_02"
+                    android:textSize="50px"
+                    android:textColor="@color/black"
                     android:text="자전주기"></TextView>
                 <TextView
                     android:id="@+id/txt_rotate"
@@ -165,6 +206,9 @@
                     android:layout_height="match_parent"
                     android:gravity="center_horizontal|center_vertical"
                     android:text="1234"
+                    android:background="@drawable/outline_02"
+                    android:textSize="50px"
+                    android:textColor="@color/black"
                     android:layout_weight="1"></TextView>
             </LinearLayout>
             <LinearLayout
@@ -177,6 +221,9 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1.2"
                     android:gravity="center_horizontal|center_vertical"
+                    android:background="@drawable/outline_02"
+                    android:textSize="50px"
+                    android:textColor="@color/black"
                     android:text="최고온도"></TextView>
                 <TextView
                     android:id="@+id/txt_maxCel"
@@ -184,12 +231,18 @@
                     android:layout_height="match_parent"
                     android:gravity="center_horizontal|center_vertical"
                     android:text="1234"
+                    android:background="@drawable/outline_02"
+                    android:textSize="50px"
+                    android:textColor="@color/black"
                     android:layout_weight="1"></TextView>
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1.2"
                     android:gravity="center_horizontal|center_vertical"
+                    android:background="@drawable/outline_02"
+                    android:textSize="50px"
+                    android:textColor="@color/black"
                     android:text="최저온도"></TextView>
                 <TextView
                     android:id="@+id/txt_minCel"
@@ -197,6 +250,9 @@
                     android:layout_height="match_parent"
                     android:gravity="center_horizontal|center_vertical"
                     android:text="1234"
+                    android:background="@drawable/outline_02"
+                    android:textSize="50px"
+                    android:textColor="@color/black"
                     android:layout_weight="1"></TextView>
             </LinearLayout>
             <LinearLayout
@@ -209,6 +265,9 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1.2"
                     android:gravity="center_horizontal|center_vertical"
+                    android:background="@drawable/outline_02"
+                    android:textSize="50px"
+                    android:textColor="@color/black"
                     android:text="대기압"></TextView>
                 <TextView
                     android:id="@+id/txt_press"
@@ -216,12 +275,18 @@
                     android:layout_height="match_parent"
                     android:gravity="center_horizontal|center_vertical"
                     android:text="1234"
+                    android:background="@drawable/outline_02"
+                    android:textSize="50px"
+                    android:textColor="@color/black"
                     android:layout_weight="1"></TextView>
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1.2"
                     android:gravity="center_horizontal|center_vertical"
+                    android:background="@drawable/outline_02"
+                    android:textSize="50px"
+                    android:textColor="@color/black"
                     android:text="위성"></TextView>
                 <TextView
                     android:id="@+id/txt_satellite"
@@ -229,6 +294,9 @@
                     android:layout_height="match_parent"
                     android:gravity="center_horizontal|center_vertical"
                     android:text="1234"
+                    android:background="@drawable/outline_02"
+                    android:textSize="50px"
+                    android:textColor="@color/black"
                     android:layout_weight="1"></TextView>
             </LinearLayout>
         </LinearLayout>

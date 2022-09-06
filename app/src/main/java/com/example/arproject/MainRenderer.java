@@ -3,7 +3,6 @@ package com.example.arproject;
 import android.content.Context;
 import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
-import android.opengl.Matrix;
 
 import com.google.ar.core.Session;
 
@@ -35,12 +34,11 @@ public class MainRenderer implements GLSurfaceView.Renderer {
     boolean isImgFind = false;
     boolean planetDraw = false;
     boolean moonDraw = false;
-//    boolean flagDraw = false;
     boolean firstFlag = false;
     boolean secondFlag = false;
     boolean blackholeDraw = false;
-    boolean lineDraw = false;
     boolean cubeDraw = false;
+    boolean sunDraw = false;
 
     String [] info_mercury = { "수성", "4879.4 km", "7.5 × 10^7 km²", "3.023 × 10^23 ㎏", "0.0352°", "87.9691일", "58.646일", "섭씨 427도", "섭씨 -193도", " 10^−14Mpa", "없음"};
     String [] info_venus = new String[]{ "금성", "12,103.7 km", "4.8 × 10^7 km²", "4.8685×10^24 kg", "177.3°", "224.7일", "243.0158일", "500°C", "467°C", "9.3 Mpa", "없음"};
@@ -56,13 +54,11 @@ public class MainRenderer implements GLSurfaceView.Renderer {
     ArrayList<Planet> planetList = new ArrayList<>();
     ArrayList<Line> mPaths = new ArrayList<>();
 
-    Line line = new Line();
     MainRenderer(Context context, RenderCallback callback){
         mRenderCallback = callback;
         mCamera = new CameraPreView();
 
-        pika = new ObjRenderer(context, "pika_modified.obj", "pika.png");
-
+        pika = new ObjRenderer(context, "pika.obj", "pika.png");
         // 행성
         sun = new ObjRenderer(context, "sun.obj", "sun.png");
         blackhole = new ObjRenderer(context, "blackhole.obj", "blackhole.png");
@@ -86,10 +82,10 @@ public class MainRenderer implements GLSurfaceView.Renderer {
         planetList.add(neptune);
 
         //깃발
-        flags.add(new ObjRenderer(context, "penguin2.obj", "Penguin.png"));
-        flags2.add(new ObjRenderer(context, "penguin2.obj", "Penguin.png"));
-        flags.add(new ObjRenderer(context, "andy2.obj", "andy.png"));
-        flags2.add(new ObjRenderer(context, "andy2.obj", "andy.png"));
+        flags.add(new ObjRenderer(context, "penguin.obj", "Penguin.png"));
+        flags2.add(new ObjRenderer(context, "penguin.obj", "Penguin.png"));
+        flags.add(new ObjRenderer(context, "andy.obj", "andy.png"));
+        flags2.add(new ObjRenderer(context, "andy.obj", "andy.png"));
 
         mflag = flags.get(0);
         mflag2 = flags2.get(0);
@@ -142,18 +138,13 @@ public class MainRenderer implements GLSurfaceView.Renderer {
 
         GLES20.glDepthMask(true);
         if(isImgFind){
+            if(sunDraw) {
+                sun.draw();
+            }
 
-            sun.draw();
 
             if(blackholeDraw){
                 blackhole.draw();
-            }
-            if(lineDraw) {
-                if (!line.isInited) {
-                    line.init();
-                }
-                line.update();
-                line.draw();
             }
 
             if(planetDraw){
@@ -178,23 +169,8 @@ public class MainRenderer implements GLSurfaceView.Renderer {
         pika.draw();
     }
 
-    void addPoint(float x, float y, float z) {
 
-        line.updatePoint(x,y,z);
-    }
 
-    float[] lineMatrix = new float[16];
-
-    void addLine(float x, float y, float z) {
-
-        line.updateProjMatrix(lineMatrix);
-
-        float[] matrix = new float[16];
-        Matrix.setIdentityM(matrix,0);
-        Matrix.translateM(matrix, 0, x,y,z);
-
-        line.setmModelMatrix(matrix);
-    }
 
     void updateSession(Session session, int displayRotation){
         if (mViewportChanged) {
@@ -204,12 +180,10 @@ public class MainRenderer implements GLSurfaceView.Renderer {
     }
 
     void setProjectionMatrix(float[] matrix){
-        System.arraycopy(matrix, 0, lineMatrix, 0, 16);
         sun.setProjectionMatrix(matrix);
         blackhole.setProjectionMatrix(matrix);
         moon.setProjectionMatrix(matrix);
         pika.setProjectionMatrix(matrix);
-        line.updateProjMatrix(matrix);
 
 
         for(ObjRenderer obj : planetList){
@@ -226,10 +200,6 @@ public class MainRenderer implements GLSurfaceView.Renderer {
         blackhole.setViewMatrix(matrix);
         moon.setViewMatrix(matrix);
         pika.setViewMatrix(matrix);
-
-        if(line != null){
-            line.updateViewMatrix(matrix);
-        }
 
         for(ObjRenderer obj : planetList){
             obj.setViewMatrix(matrix);
